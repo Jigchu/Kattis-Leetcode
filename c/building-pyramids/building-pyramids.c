@@ -6,7 +6,7 @@ int main(void)
 {
     // Gets number of blocks
     long blocks;
-    if (!scanf("%li", &blocks))
+    if (scanf("%li", &blocks) == EOF)
     {
         return 1;
     }

@@ -27,7 +27,10 @@ int main(void)
 {
     // Gest number of lines
     int lines;
-    scanf("%i", &lines);
+    if (scanf("%i", &lines) == EOF)
+    {
+        return 1;
+    }
 
     // Gets the instructions
     for (int i = 0; i < lines; i++)

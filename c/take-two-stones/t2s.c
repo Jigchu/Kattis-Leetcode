@@ -4,7 +4,7 @@ int main(void)
 {
     // Gets number of stones
     long stones;
-    if (!scanf("%li", &stones))
+    if (scanf("%li", &stones) == EOF)
     {
         return 1;
     }

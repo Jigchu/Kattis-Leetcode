@@ -6,7 +6,7 @@ int main(void)
     int r1;
     int s;
     
-    if (!scanf("%i %i", &r1, &s))
+    if (scanf("%i %i", &r1, &s) == EOF)
     {
         return 1;
     }
