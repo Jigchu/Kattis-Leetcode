@@ -1,4 +1,8 @@
+#include <ctype.h>
+#include <stdbool.h>
+#include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 // Max amount of cats
 #define MAX 200000
@@ -16,38 +20,90 @@ cat_info cat_arr[MAX];
 long cat_count;
 
 // Function prototypes
-void arrived(cat_info cat);
-void update(cat_info cat, int increase);
-void treated(cat_info car);
+int bisearch(char *name);
 void mergesort(int start, int end);
 void merge(int start, int mid, int end);
+void arrived(char *cat, int infec_lvl);
+void update(char *cat, int increase);
+void treated(char *cat);
 void query(void);
 
 int main(void)
 {
-    // Gest number of lines
+    // Gets number of lines
     int lines;
-    if (scanf("%i", &lines) == EOF)
+    if (scanf("%i\n", &lines) == EOF)
     {
         return 1;
     }
 
-    // Gets the instructions
+    // Actual code execution
     for (int i = 0; i < lines; i++)
     {
+        // Gets command
+        char *command = malloc(sizeof(char) * 41);
+        if (command == NULL)
+        {
+            return 2;
+        }
 
+        scanf("%[^\n]%*c", command);
+
+        // Gets call and strlen
+        int call = command[0] - '0';
+        
+        int len = strlen(command);
+
+        switch (call)
+        {
+            case 0:
+            {
+                // Gets cat name
+                int i = 2;
+
+                while (isalpha(command[i + 1]))
+                {
+                    i++;
+                }
+
+                char name[i - 1];
+
+                for (int j = 0; j <= i; j++)
+                {
+                    name[j] = command[j + 2];
+                }
+
+                // Gets infect level
+                int infec_lvl;
+
+                char *temp = malloc(sizeof(char) * len - (i + 2));
+
+                i++;
+
+                for (int j = 0; i < len; i++, j++)
+                {
+                    temp[j] = command[i];
+                }
+
+                infec_lvl = atoi(temp);
+
+                free(temp);
+
+                // Calls arrive functiona
+                arrived(name, infec_lvl);
+
+                break;
+            }
+            default:
+                return 3;
+                break;
+        }
     }
 }
 
-void arrived(cat_info cat)
-{
 
-}
-void update(cat_info cat, int increase)
-{
-
-}
-void treated(cat_info car)
+// Implementation of binary search
+int bisearch(char *name)
 {
 
 }
@@ -131,6 +187,25 @@ void merge(int start, int mid, int end)
     return;
 }
 
+// Adds cat_info into cat_arr
+void arrived(char *cat, int infec_lvl)
+{
+
+}
+
+// Updates cat's infec_lvl
+void update(char *cat, int increase)
+{
+
+}
+
+// Removes cat_info into cat_arr
+void treated(char *cat)
+{
+
+}
+
+// Prints out cat with highest infec_lvl
 void query(void)
 {
 
