@@ -1,2 +1,5 @@
 # Ignores directories by vscode
 **/.vscode
+
+# Ignores .exe files as they are not needed
+*.exe
