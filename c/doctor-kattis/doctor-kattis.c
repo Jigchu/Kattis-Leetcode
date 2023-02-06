@@ -21,6 +21,8 @@ long cat_count;
 
 // Function prototypes
 int bisearch(char *name);
+void mergealpha(int start, int end);
+void amerge(int start, int mid, int end);
 void mergesort(int start, int end);
 void merge(int start, int mid, int end);
 void arrived(char *cat, int infec_lvl);
@@ -41,7 +43,7 @@ int main(void)
     for (int i = 0; i < lines; i++)
     {
         // Gets command
-        char *command = malloc(sizeof(char) * 41);
+        char *command = malloc(sizeof(char) * 151);
         if (command == NULL)
         {
             return 2;
@@ -66,12 +68,14 @@ int main(void)
                     i++;
                 }
 
-                char name[i - 1];
+                char name[i];
 
-                for (int j = 0; j <= i; j++)
+                for (int j = 2; j <= i; j++)
                 {
-                    name[j] = command[j + 2];
+                    name[j - 2] = command[j];
                 }
+                
+                name[i - 1] = '\0';
 
                 // Gets infect level
                 int infec_lvl;
@@ -91,7 +95,7 @@ int main(void)
 
                 // Calls arrive functiona
                 arrived(name, infec_lvl);
-
+                
                 break;
             }
             default:
@@ -105,7 +109,120 @@ int main(void)
 // Implementation of binary search
 int bisearch(char *name)
 {
+    // Start vars
+    int start = 0;
+    int end = cat_count - 1;
 
+    // Sorts cat_info alphabetically
+    mergealpha(0, cat_count - 1);
+
+    // Start search
+    while (true)
+    {
+        int mid = (start + end) / 2;
+        int result = strcmp(cat_arr[mid].name, name);
+
+        // Checks for match
+        if (!result)
+        {
+            // Reverts to numerical order
+            mergesort(0, cat_count - 1);
+
+            // Returns index
+            return mid;
+        }
+        else if (result > 0)
+        {
+            // Checks left halve
+            end = mid - 1;
+        }
+        else if (result < 0)
+        {
+            // Checks right halve
+            start = mid + 1;
+        }
+    }
+}
+
+// Merge sort using recursion to sort alphabetically
+void mergealpha(int start, int end)
+{
+    // Break case
+    if (start == end)
+    {
+        return;
+    }
+
+    // Finds middle of list
+    int mid = (start + end) / 2;
+
+    mergesort(0, mid);                  // Sorts left part
+    mergesort(mid + 1, end);            // Sorts right part
+
+    // Merges left and right part
+    amerge(start, mid, end);
+
+    // Ends function
+    return;
+}
+
+// Function to merge items in mergealpha
+void amerge(int start, int mid, int end)
+{
+    // Initialise auxilery array
+    cat_info aux[end + 1];
+
+    // Initialise pointers
+    int i = 0;
+    int j = mid + 1;
+    int k = 0;
+
+    // Merges items until we reach the end of one list
+    while (i <= mid && j <= end)
+    {
+        // Gets difference in name for both cats
+        char *val1 = cat_arr[i].name;
+        char *val2 = cat_arr[j].name;
+
+        int result = strcmp(val1, val2);
+
+        // Checks for larger difference (prioritises earlier place in array if both vals are same) and places pair in aux in sorted manner
+        if (result >= 0)
+        {
+            aux[k] = cat_arr[i];
+            i++;
+        }
+        else if (result < 0)
+        {
+            aux[k] = cat_arr[j];
+            j++;
+        }
+
+        // Increments k by one for next pair in aux
+        k++;
+    }
+
+    // Once we reach end of one list, assume that the rest of other list is sorted and copy into aux
+    for (; i <= mid; i++)
+    {
+        aux[k] = cat_arr[i];
+        k++;
+    }
+
+    for (; j <= end; j++)
+    {
+        aux[k] = cat_arr[j];
+        k++;
+    }
+
+    // Copies sorted vals in aux into cat_arr
+    for (k = 0; k <= end; k++)
+    {
+     cat_arr[k] = aux[k];
+    }
+
+    // Ends function
+    return;
 }
 
 // Merge sort using recursion
@@ -190,7 +307,17 @@ void merge(int start, int mid, int end)
 // Adds cat_info into cat_arr
 void arrived(char *cat, int infec_lvl)
 {
+    // Adds cat to array
+    cat_arr[cat_count].name = cat;
+    cat_arr[cat_count].infec_lvl = infec_lvl;
 
+    // Sorts array to maintained a sorted array
+    mergesort(0, cat_count);
+
+    cat_count++;
+
+    // Ends function
+    return;
 }
 
 // Updates cat's infec_lvl
