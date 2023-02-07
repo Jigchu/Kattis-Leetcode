@@ -250,7 +250,7 @@ void mergesort(int start, int end)
 // Function to merge items in mergesort
 void merge(int start, int mid, int end)
 {
-    // Initialise auxilery array
+    // Initialise auxiliary array
     cat_info aux[end + 1];
 
     // Initialise pointers
