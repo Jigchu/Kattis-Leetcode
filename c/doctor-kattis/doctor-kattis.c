@@ -43,7 +43,7 @@ int main(void)
     for (int i = 0; i < lines; i++)
     {
         // Gets command
-        char *command = malloc(sizeof(char) * 33);
+        char *command = malloc(sizeof(char) * 151);
         if (command == NULL)
         {
             return 2;
@@ -68,7 +68,7 @@ int main(void)
                     i++;
                 }
 
-                char *name = malloc(sizeof(char) * i);
+                char name[i];
 
                 for (int j = 2; j <= i; j++)
                 {
@@ -93,58 +93,14 @@ int main(void)
 
                 free(temp);
 
-                // Calls arrive function
+                // Calls arrive functiona
                 arrived(name, infec_lvl);
                 
                 break;
             }
-            case 1:
-            {
-                // Gets cat name
-                int i = 2;
-
-                while (isalpha(command[i + 1]))
-                {
-                    i++;
-                }
-
-                char *temp_name = malloc(sizeof(char) * i);
-
-                for (int j = 2; j <= i; j++)
-                {
-                    temp_name[j - 2] = command[j];
-                }
-                
-                temp_name[i - 1] = '\0';
-
-                // Gets infect level
-                int plus_infec;
-
-                char *temp = malloc(sizeof(char) * len - (i + 2));
-
-                i++;
-
-                for (int j = 0; i < len; i++, j++)
-                {
-                    temp[j] = command[i];
-                }
-
-                plus_infec = atoi(temp);
-
-                free(temp);
-
-                // Calls update function
-                update(temp_name, plus_infec);
-
-                free(temp_name);
-
-                break;
-            }
             default:
-            {
                 return 3;
                 break;
-            }
         }
     }
 }
@@ -156,7 +112,6 @@ int bisearch(char *name)
     // Start vars
     int start = 0;
     int end = cat_count - 1;
-    int repeat = 0;
 
     // Sorts cat_info alphabetically
     mergealpha(0, cat_count - 1);
@@ -186,21 +141,6 @@ int bisearch(char *name)
             // Checks right halve
             start = mid + 1;
         }
-
-        // Checks if the name does not exist
-        if (start == mid || end == mid)
-        {
-            if (repeat > 1)
-            {
-                // Returns negative index
-                return -1;
-            }
-            else
-            {
-                repeat++;
-            }
-            
-        }
     }
 }
 
@@ -216,8 +156,8 @@ void mergealpha(int start, int end)
     // Finds middle of list
     int mid = (start + end) / 2;
 
-    mergealpha(0, mid);                  // Sorts left part
-    mergealpha(mid + 1, end);            // Sorts right part
+    mergesort(0, mid);                  // Sorts left part
+    mergesort(mid + 1, end);            // Sorts right part
 
     // Merges left and right part
     amerge(start, mid, end);
@@ -383,24 +323,7 @@ void arrived(char *cat, int infec_lvl)
 // Updates cat's infec_lvl
 void update(char *cat, int increase)
 {
-    // Gets index of car
-    int index = bisearch(cat);
 
-    // Error handling for bisearch
-    if (index < 0)
-    {
-        printf("Invalid name entered");
-        return;
-    }
-
-    // Updates infect level
-    cat_arr[index].infec_lvl += increase;
-
-    // Maintains sorted array
-    mergesort(0, cat_count - 1);
-
-    // Ends function
-    return;
 }
 
 // Removes cat_info into cat_arr
