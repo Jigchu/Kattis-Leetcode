@@ -4,7 +4,7 @@ int main(void)
 {
     // Gets input
     int price;
-    if (scanf("%i", &price) == EOF)
+    if (!scanf("%i", &price))
     {
         return 1;
     }
