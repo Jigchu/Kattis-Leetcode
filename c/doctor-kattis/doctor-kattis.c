@@ -140,6 +140,32 @@ int main(void)
 
                 break;
             }
+            case 2:
+            {
+                // Gets cat name
+                int i = 2;
+
+                while (isalpha(command[i + 1]))
+                {
+                    i++;
+                }
+
+                char *temp_name = malloc(sizeof(char) * i);
+
+                for (int j = 2; j <= i; j++)
+                {
+                    temp_name[j - 2] = command[j];
+                }
+                
+                temp_name[i - 1] = '\0';
+
+                // Calls treated
+                treated(temp_name);
+
+                free(temp_name);
+                
+                break;
+            }
             default:
             {
                 return 3;
@@ -406,7 +432,22 @@ void update(char *cat, int increase)
 // Removes cat_info into cat_arr
 void treated(char *cat)
 {
+    // Removes cat from list
+    int index = bisearch(cat);
+    free(cat_arr[index].name);
 
+    for (int i = index; i < cat_count; i++)
+    {
+        cat_arr[i] = cat_arr[i + 1];
+    }
+
+    // Clears info about cat that left
+    cat_arr[cat_count - 1].name = '\0';
+    cat_arr[cat_count - 1].infec_lvl = 0;
+    cat_count--;
+
+    // Ends function
+    return;
 }
 
 // Prints out cat with highest infec_lvl
