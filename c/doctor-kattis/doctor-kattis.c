@@ -383,7 +383,7 @@ void merge(int start, int mid, int end)
     // Copies sorted vals in aux into cat_arr
     for (k = 0; k <= end; k++)
     {
-     cat_arr[k] = aux[k];
+        cat_arr[k] = aux[k];
     }
 
     // Ends function
