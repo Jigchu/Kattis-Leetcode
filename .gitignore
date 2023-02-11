@@ -3,3 +3,4 @@
 
 # Ignores .exe files as they are not needed
 *.exe
+*.txt

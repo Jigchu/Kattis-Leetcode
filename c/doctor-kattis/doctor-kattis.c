@@ -234,7 +234,7 @@ int bisearch(char *name)
 void mergealpha(int start, int end)
 {
     // Break case
-    if (start == end)
+    if (start == end || end < 0)
     {
         return;
     }
@@ -286,6 +286,12 @@ void amerge(int start, int mid, int end)
 
         // Increments k by one for next pair in aux
         k++;
+
+        // Frees memory
+        free(val1);
+        free(val2);
+        val1 = NULL;
+        val2 = NULL;
     }
 
     // Once we reach end of one list, assume that the rest of other list is sorted and copy into aux
@@ -315,7 +321,7 @@ void amerge(int start, int mid, int end)
 void mergesort(int start, int end)
 {
     // Break case
-    if (start == end)
+    if (start == end || end < 0)
     {
         return;
     }
